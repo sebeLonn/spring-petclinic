@@ -176,3 +176,28 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 ## License
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+
+## Team & task distribution
+
+| Task | Owner | Description |
+|------|-------|--------------|
+| Terraform + Bash | Talha | Provision EC2 instance, security group, key pair via Terraform. Bash install script runs as EC2 userdata to install Docker. |
+| Docker | Sandis | Write Dockerfile, build and test locally, push image to Docker Hub. |
+| Jenkins | Reinis | Set up Jenkins, build pipeline skeleton, wire up final deploy trigger. |
+| Ansible | Arina | Configure inventory with EC2 IP, write playbook, deploy PetClinic container. |
+
+## Workflow
+
+1. **Talha** provisions the EC2 instance with Terraform and shares the public IP with Arina.
+2. **Sandis** builds and pushes the Docker image in parallel (no dependency on EC2).
+3. **Reinis** prepares the Jenkins pipeline skeleton in parallel.
+4. **Arina** configures Ansible against the EC2 IP once it's available, and verifies Docker + container startup.
+5. **Reinis's** Jenkins pipeline ties it all together: build image → push to Docker Hub → trigger Ansible → deploy container to EC2.
+
+## Branch strategy
+
+- `main` — protected, PR + 1 approval required
+- `feature/terraform` — Talha
+- `feature/docker` — Sandis
+- `feature/jenkins` — Reinis
+- `feature/ansible-bash` — Arina
