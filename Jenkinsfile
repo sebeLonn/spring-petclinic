@@ -28,17 +28,14 @@ pipeline {
             }
         }
 
-         stage('Deploy to EC2') {
+        stage('Deploy to EC2') {
             steps {
-                    sh '''
-                        cat > ansible/inventory.ini << EOF
-          [app]
-          localhost ansible_connection=local
-          EOF
-                          ansible-playbook -i ansible/inventory.ini ansible/playbook.yml --extra-vars "image_tag=$IMAGE_TAG"
-                       '''
-                    }
-                }
+                sh '''
+         printf "[app]\\localhost ansible_connection=local\\n" > ansible/inventory.ini
+         ansible-playbook -i ansible/inventory.ini ansible/playbook.yml --extra-vars "image_tag=$IMAGE_TAG"
+         '''
+            }
+         }
         
         stage('Health Check') {
             steps {
