@@ -43,7 +43,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 sh 'sleep 20'
-                sh 'curl -f http://localhost:8080 || (echo "Health check failed" && exit 1)'
+                sh 'curl -f http://localhost:80 || (echo "Health check failed" && exit 1)'
             }
         }
     }
