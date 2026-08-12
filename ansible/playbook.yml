@@ -4,7 +4,8 @@
   become: true
 
   vars:
-    docker_image: sandissarkovskis/devops-final-project:latest
+    docker_image: "sandissarkovskis/devops-final-project:{{ image_tag }}"
+    image_tag: latest
 
     blue_container: petclinic-blue
     green_container: petclinic-green
