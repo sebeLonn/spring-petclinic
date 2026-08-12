@@ -31,7 +31,8 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 sh '''
-         printf "[app]\\localhost ansible_connection=local\\n" > ansible/inventory.ini
+         echo "[app]" > ansible/inventory.ini
+         echo "localhost ansible_connection=local" >> ansible/inventory.ini
          ansible-playbook -i ansible/inventory.ini ansible/playbook.yml --extra-vars "image_tag=$IMAGE_TAG"
          '''
             }
