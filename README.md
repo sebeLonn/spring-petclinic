@@ -178,3 +178,61 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
 <--help demo test Thu Aug 13 21:25:27 EEST 2026 -->
 <--help demo Thu Aug 13 23:13:01 EEST 2026 -->
+
+---
+
+## 🐾 DevOps Capstone — Team 4
+
+This section documents the DevOps pipeline built on top of the original Spring PetClinic
+application as part of the Accenture Baltics DevOps Bootcamp (August 2026). The original
+project content above is preserved as-is.
+
+### Team
+
+| Member | Role |
+|---|---|
+| Parwez Akhtar | Mentor |
+| Talha Keles | Team Lead — Infrastructure (Terraform), Security (SSH→SSM) |
+| Sandis Sarkovskis | Docker & Docker Hub |
+| Arina Petrova | Ansible, NGINX, Blue/Green Deployment |
+| Reinis Janis Brencis | Jenkins CI/CD |
+
+### Live Links
+
+- **Application:** http://52.19.50.245
+- **Jenkins:** http://52.19.50.245:8081
+
+### Architecture
+
+A single EC2 instance (Amazon Linux 2023, t3.medium) provisioned entirely via Terraform runs
+the full pipeline: a GitHub push triggers a Jenkins build → image is pushed to Docker Hub →
+Jenkins runs an Ansible playbook → Ansible does a zero-downtime blue/green switch behind NGINX.
+CloudWatch monitors CPU and application logs independently in the background.
+
+Full architecture diagram and per-member write-ups: [`docs/PetClinic_Team_Documentation.pdf`](docs/PetClinic_Team_Documentation.pdf)
+
+### Tech Stack
+
+Terraform · AWS (EC2, S3, DynamoDB, CloudWatch, IAM, SSM) · Docker & Docker Hub · Ansible · NGINX · Jenkins · GitHub Webhooks
+
+### Security Notes
+
+- SSH is fully disabled — no inbound port 22, and the `sshd` service itself is stopped on the instance.
+- All administrative access goes through **AWS Systems Manager Session Manager**, authenticated per-user via MFA. No shared key files.
+- Only ports 80 (app, via NGINX) and 8081 (Jenkins UI/webhook) are exposed to the internet. Blue/green ports 8082/8083 are internal-only.
+- Terraform state is stored remotely (S3 + DynamoDB lock table), not on any individual's laptop.
+
+### Bonus Tasks (8/8 completed)
+
+| # | Task | Owner(s) |
+|---|---|---|
+| 1 | NGINX reverse proxy | Arina |
+| 2 | Remote Terraform backend (S3 + DynamoDB) | Talha |
+| 3 | GitHub webhook integration | Talha, Reinis |
+| 4 | Secure credentials in Jenkins | Reinis |
+| 5 | Blue/green deployment | Arina, Reinis, Sandis |
+| 6 | CloudWatch logging & alarms | Talha |
+| 7 | Versioned Docker images (Jenkins build number) | Reinis, Sandis |
+| 8 | Automated, confirmation-guarded `terraform destroy` | Talha |
+
+> Additionally completed as a mid-project security requirement (not part of the original bonus list): full **SSH → SSM migration**.
