@@ -237,3 +237,4 @@ Terraform · AWS (EC2, S3, DynamoDB, CloudWatch, IAM, SSM) · Docker & Docker Hu
 
 > Additionally completed as a mid-project security requirement (not part of the original bonus list): full **SSH → SSM migration**.
 <--help demo Fri Aug 14 09:45:11 EEST 2026 -->
+<--help demo Fri Aug 14 10:28:25 EEST 2026 -->
