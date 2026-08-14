@@ -236,3 +236,4 @@ Terraform · AWS (EC2, S3, DynamoDB, CloudWatch, IAM, SSM) · Docker & Docker Hu
 | 8 | Automated, confirmation-guarded `terraform destroy` | Talha |
 
 > Additionally completed as a mid-project security requirement (not part of the original bonus list): full **SSH → SSM migration**.
+<--help demo Fri Aug 14 09:45:11 EEST 2026 -->
